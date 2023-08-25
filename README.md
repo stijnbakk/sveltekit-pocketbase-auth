@@ -1,38 +1,21 @@
-# create-svelte
+# Sveltekit + Pocketbase + Authentication (SSR)
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Simple implementation of sveltekit in SSR with pocketbase and authentication.
 
-## Creating a project
+It works simply like this:
 
-If you're seeing this, you've probably already done this step. Congrats!
+1. in `hooks.server.ts` a pocketbase client is initiated for the user, to be passed with `locals` to server side
+2. cookies are retrieved if available
+3. server-side, it uses `locals.pocketbase` created in hooks for authentication (`routes/auth/+page.server.ts`)
+4. upon succesful authorization, serverside sets the cookies
+5. hooks, in turn, set the `locals.user`
+6. at top level, `+layout.server.ts` checks if `locals.user` exists, and if it does, passes it as `user` for `$page.data` use
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## To setup
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+1. Download / clone repo
+2. Add or start [Pocketbase](https://pocketbase.io/docs/)
+3. Edit `.env.example` to match with your pocketbase url
+4. Install dependencies `yarn`
+5. Create user in pocketbase dashboard
+6. Run and use `yarn dev`
